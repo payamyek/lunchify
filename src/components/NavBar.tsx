@@ -34,7 +34,7 @@ const themes = [
   'winter',
 ];
 
-const ThemePreview = (props: { value: string }) => {
+const ThemeSelectorDropdownItem = (props: { value: string }) => {
   return (
     <button
       className='rounded-lg outline-base-content text-left'
@@ -62,25 +62,22 @@ const ThemePreview = (props: { value: string }) => {
   );
 };
 
-const ThemeSelector = () => {
+const ThemeSelectorDropdown = () => {
   useEffect(() => themeChange(false), []);
 
   return (
-    <div className='dropdown dropdown-end'>
-      <label tabIndex={0} className='btn btn-ghost rounded-btn'>
+    <details className='dropdown dropdown-end'>
+      <summary className='btn btn-ghost rounded-btn'>
         <Palette strokeWidth={1.5} absoluteStrokeWidth />
         Theme
-        <ChevronDown size={20} strokeWidth={1.5} absoluteStrokeWidth />
-      </label>
-      <div
-        tabIndex={0}
-        className='menu dropdown-content flex-nowrap z-[1] shadow bg-base-200 rounded-box mt-2 p-3 gap-3 max-h-96 w-56 overflow-y-auto'
-      >
+        <ChevronDown strokeWidth={1.5} absoluteStrokeWidth />
+      </summary>
+      <div className='menu dropdown-content flex-nowrap z-[1] shadow bg-base-200 rounded-box mt-2 p-3 gap-3 max-h-96 w-52 overflow-y-auto'>
         {themes.map((theme) => (
-          <ThemePreview key={theme} value={theme} />
+          <ThemeSelectorDropdownItem key={theme} value={theme} />
         ))}
       </div>
-    </div>
+    </details>
   );
 };
 
@@ -91,7 +88,7 @@ const NavBar = () => {
         <a className='btn btn-ghost normal-case text-xl'>Lunchify</a>
       </div>
       <div className='navbar-end'>
-        <ThemeSelector />
+        <ThemeSelectorDropdown />
       </div>
     </div>
   );
