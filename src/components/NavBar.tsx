@@ -15,7 +15,7 @@ const themes = [
 const ThemeSelector = () => {
   useEffect(() => themeChange(false), []);
 
-  const ThemePreview = (props) => {
+  const ThemePreview = (props: { value: string }) => {
     return (
       <button
         className='rounded-lg outline-base-content text-left'
