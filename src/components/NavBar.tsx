@@ -1,49 +1,64 @@
+import { ChevronDown, Palette } from 'lucide-react';
 import { useEffect } from 'react';
 import { themeChange } from 'theme-change';
 
 const themes = [
-  {
-    emoji: '🌙',
-    name: 'dark',
-  },
-  {
-    emoji: '☀️',
-    name: 'light',
-  },
-  {
-    emoji: '🧁',
-    name: 'cupcake',
-  },
-  {
-    emoji: '🐝',
-    name: 'bumblebee',
-  },
-  {
-    emoji: '💎',
-    name: 'emerald',
-  },
-  {
-    emoji: '💰',
-    name: 'corporate',
-  },
-  {
-    emoji: '😎',
-    name: 'synthwave',
-  },
+  'dark',
+  'light',
+  'cupcake',
+  'bumblebee',
+  'emerald',
+  'corporate',
+  'synthwave',
 ];
 
 const ThemeSelector = () => {
   useEffect(() => themeChange(false), []);
 
+  const ThemePreview = (props) => {
+    return (
+      <button
+        className='rounded-lg outline-base-content text-left'
+        data-set-theme={props.value}
+        data-act-class='ACTIVECLASS'
+        data-theme={props.value}
+      >
+        <div
+          data-theme={props.value}
+          className='rounded-lg bg-base-100 text-base-content w-full cursor-pointer font-sans'
+        >
+          <div className=' grid grid-cols-5 grid-rows-3'>
+            <div className='col-span-5 row-span-3 row-start-1 flex items-center gap-2 p-3'>
+              <div className='flex-grow text-sm ml-4'>{props.value}</div>{' '}
+              <div className='flex h-full flex-shrink-0 flex-wrap gap-1'>
+                <div className='bg-primary w-2 rounded'></div>{' '}
+                <div className='bg-secondary w-2 rounded'></div>{' '}
+                <div className='bg-accent w-2 rounded'></div>{' '}
+                <div className='bg-neutral w-2 rounded'></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </button>
+    );
+  };
+
   return (
-    <select className='select w-full max-w-xs' data-choose-theme>
-      <option disabled>Theme</option>
-      {themes.map((theme) => (
-        <option key={theme.name} value={theme.name}>
-          {theme.emoji} {theme.name}
-        </option>
-      ))}
-    </select>
+    <div className='dropdown dropdown-end'>
+      <label tabIndex={0} className='btn btn-ghost rounded-btn'>
+        <Palette strokeWidth={1.5} absoluteStrokeWidth />
+        Theme
+        <ChevronDown size={20} strokeWidth={1.5} absoluteStrokeWidth />
+      </label>
+      <div
+        tabIndex={0}
+        className='menu dropdown-content flex-nowrap z-[1] shadow bg-base-200 rounded-box mt-2 p-3 gap-3 max-h-65 w-56 overflow-y-auto'
+      >
+        {themes.map((theme) => (
+          <ThemePreview key={theme} value={theme} />
+        ))}
+      </div>
+    </div>
   );
 };
 
@@ -51,70 +66,7 @@ const NavBar = () => {
   return (
     <div className='navbar bg-base-100'>
       <div className='navbar-start'>
-        <div className='dropdown'>
-          <label tabIndex={0} className='btn btn-ghost lg:hidden'>
-            <svg
-              xmlns='http://www.w3.org/2000/svg'
-              className='h-5 w-5'
-              fill='none'
-              viewBox='0 0 24 24'
-              stroke='currentColor'
-            >
-              <path
-                strokeLinecap='round'
-                strokeLinejoin='round'
-                strokeWidth='2'
-                d='M4 6h16M4 12h8m-8 6h16'
-              />
-            </svg>
-          </label>
-          <ul
-            tabIndex={0}
-            className='menu menu-sm dropdown-content mt-3 z-[1] p-2 shadow bg-base-100 rounded-box w-52'
-          >
-            <li>
-              <a>Item 1</a>
-            </li>
-            <li>
-              <a>Parent</a>
-              <ul className='p-2'>
-                <li>
-                  <a>Submenu 1</a>
-                </li>
-                <li>
-                  <a>Submenu 2</a>
-                </li>
-              </ul>
-            </li>
-            <li>
-              <a>Item 3</a>
-            </li>
-          </ul>
-        </div>
         <a className='btn btn-ghost normal-case text-xl'>Lunchify</a>
-      </div>
-      <div className='navbar-center hidden lg:flex'>
-        <ul className='menu menu-horizontal px-1'>
-          <li>
-            <a>Item 1</a>
-          </li>
-          <li tabIndex={0}>
-            <details>
-              <summary>Parent</summary>
-              <ul className='p-2'>
-                <li>
-                  <a>Submenu 1</a>
-                </li>
-                <li>
-                  <a>Submenu 2</a>
-                </li>
-              </ul>
-            </details>
-          </li>
-          <li>
-            <a>Item 3</a>
-          </li>
-        </ul>
       </div>
       <div className='navbar-end'>
         <ThemeSelector />
