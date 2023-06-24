@@ -8,7 +8,6 @@ import { dark } from '@clerk/themes';
 import { Route, Routes, useNavigate } from 'react-router-dom';
 import PageLayout from '../layouts/PageLayout';
 import HomePage from '../pages/HomePage';
-import SignInPage from '../pages/SignInPage';
 import SignUpPage from '../pages/SignUpPage';
 
 if (!import.meta.env.VITE_REACT_APP_CLERK_PUBLISHABLE_KEY)
