@@ -1,5 +1,4 @@
 import { SignUp } from '@clerk/clerk-react';
-import './SignUpPage.sass';
 
 const SignUpPage = () => {
   return (

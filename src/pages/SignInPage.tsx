@@ -1,5 +1,4 @@
 import { SignIn } from '@clerk/clerk-react';
-import './SignInPage.sass';
 
 const SignInPage = () => {
   return (

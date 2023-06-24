@@ -4,6 +4,7 @@ import {
   SignedIn,
   SignedOut,
 } from '@clerk/clerk-react';
+import { dark } from '@clerk/themes';
 import { Route, Routes, useNavigate } from 'react-router-dom';
 import PageLayout from '../layouts/PageLayout';
 import HomePage from '../pages/HomePage';
@@ -28,7 +29,13 @@ const ClerkProviderWithRoutes = () => {
   const navigate = useNavigate();
 
   return (
-    <ClerkProvider publishableKey={clerkPubKey} navigate={(to) => navigate(to)}>
+    <ClerkProvider
+      publishableKey={clerkPubKey}
+      navigate={(to) => navigate(to)}
+      appearance={{
+        baseTheme: dark,
+      }}
+    >
       <Routes>
         <Route path='/sign-in/*' element={<SignInPage />} />
         <Route path='/sign-up/*' element={<SignUpPage />} />
