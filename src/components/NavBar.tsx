@@ -1,5 +1,5 @@
-import { SignOutButton } from '@clerk/clerk-react';
-import { ChevronDown, LogOut, Palette } from 'lucide-react';
+import { UserButton } from '@clerk/clerk-react';
+import { ChevronDown, Palette } from 'lucide-react';
 import { useEffect } from 'react';
 import { themeChange } from 'theme-change';
 import refreshThemeMetaTag from '../utils/refreshThemeMetaTag';
@@ -95,12 +95,7 @@ const NavBar = () => {
       </div>
       <div className='navbar-end gap-3'>
         <ThemeSelectorDropdown />
-        <SignOutButton>
-          <button className='btn btn-ghost'>
-            <LogOut strokeWidth={1.5} absoluteStrokeWidth />
-            Sign Out
-          </button>
-        </SignOutButton>
+        <UserButton />
       </div>
     </div>
   );
