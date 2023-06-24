@@ -12,8 +12,6 @@ const refreshThemeMetaTag = () => {
     'background-color'
   );
 
-  console.log(metaTag?.content);
-
   // update meta tag
   if (metaTag) metaTag.content = bgColour;
 };
