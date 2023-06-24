@@ -8,6 +8,7 @@ import { dark } from '@clerk/themes';
 import { Route, Routes, useNavigate } from 'react-router-dom';
 import PageLayout from '../layouts/PageLayout';
 import HomePage from '../pages/HomePage';
+import SignInPage from '../pages/SignInPage';
 import SignUpPage from '../pages/SignUpPage';
 
 if (!import.meta.env.VITE_REACT_APP_CLERK_PUBLISHABLE_KEY)
@@ -36,7 +37,7 @@ const ClerkProviderWithRoutes = () => {
       }}
     >
       <Routes>
-        <Route path='/sign-in/*' element={<div>hey</div>} />
+        <Route path='/sign-in/*' element={<SignInPage />} />
         <Route path='/sign-up/*' element={<SignUpPage />} />
         <Route element={<PageLayout />}>
           <Route
