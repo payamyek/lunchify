@@ -1,6 +1,7 @@
 import { ChevronDown, Palette } from 'lucide-react';
 import { useEffect } from 'react';
 import { themeChange } from 'theme-change';
+import refreshThemeMetaTag from '../utils/refreshThemeMetaTag';
 
 const themes = [
   'light',
@@ -41,6 +42,7 @@ const ThemeSelectorDropdownItem = (props: { value: string }) => {
       data-set-theme={props.value}
       data-act-class='ACTIVECLASS'
       data-theme={props.value}
+      onClick={refreshThemeMetaTag}
     >
       <div
         data-theme={props.value}
@@ -63,7 +65,10 @@ const ThemeSelectorDropdownItem = (props: { value: string }) => {
 };
 
 const ThemeSelectorDropdown = () => {
-  useEffect(() => themeChange(false), []);
+  useEffect(() => {
+    themeChange(false);
+    refreshThemeMetaTag();
+  }, []);
 
   return (
     <details className='dropdown dropdown-end'>
