@@ -32,9 +32,7 @@ export default async function handler(
   } catch (err) {
     return response.status(400).json({
       message: 'Webhook verification failed',
-      headers,
       error: err instanceof Error ? err.toString() : '',
-      signature: process.env.USER_WEBHOOK_SECRET,
     });
   }
 
