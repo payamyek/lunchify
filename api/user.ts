@@ -1,6 +1,6 @@
 //import type { WebhookEvent } from '@clerk/clerk-sdk-node';
 import type { VercelRequest, VercelResponse } from '@vercel/node';
-//import { Webhook } from 'svix';
+import { Webhook } from 'svix';
 
 export default async function handler(
   request: VercelRequest,
@@ -17,14 +17,17 @@ export default async function handler(
       .json({ message: 'Server function has misconfigured webhook secret' });
   }
 
-  //const wh = new Webhook(process.env.USER_WEBHOOK_SECRET);
+  const wh = new Webhook(process.env.USER_WEBHOOK_SECRET);
+  const headers = {
+    'webhook-id': request.headers['svix-id'] as string,
+    'webhook-signature': request.headers['svix-signature'] as string,
+    'webhook-timestamp': request.headers['svix-timestamp'] as string,
+  };
 
   let msg;
 
-  request.headers;
-
   try {
-    //msg = wh.verify(request.body, request.headers);
+    msg = wh.verify(request.body, headers);
   } catch (err) {
     return response
       .status(400)
