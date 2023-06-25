@@ -10,14 +10,13 @@ export default async function handler(
   if (request.method !== 'POST') {
     return response
       .status(405)
-      .json({ message: `${request.method} method not allowed` });
+      .json({ error: `${request.method} method not allowed` });
   } else if (process.env.USER_WEBHOOK_SECRET === undefined) {
     return response
       .status(500)
-      .json({ message: 'Server function has misconfigured webhook secret' });
+      .json({ error: 'Server function has misconfigured webhook secret' });
   }
 
-  const wh = new Webhook(process.env.USER_WEBHOOK_SECRET);
   const headers = {
     'webhook-id': request.headers['svix-id'] as string,
     'webhook-signature': request.headers['svix-signature'] as string,
@@ -27,16 +26,17 @@ export default async function handler(
   let msg;
 
   try {
+    const wh = new Webhook(process.env.USER_WEBHOOK_SECRET);
     msg = wh.verify(request.body, headers);
+    msg;
   } catch (err) {
-    return response
-      .status(400)
-      .json({ message: 'Webhook verification failed' });
+    return response.status(400).json({
+      message: 'Webhook verification failed',
+      headers,
+      error: err instanceof Error ? err.toString() : '',
+      signature: process.env.USER_WEBHOOK_SECRET,
+    });
   }
 
-  response.status(200).json({
-    message: msg,
-    headers: request.headers,
-    body: request.body,
-  });
+  response.status(204);
 }
