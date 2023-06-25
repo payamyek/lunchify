@@ -39,15 +39,14 @@ const ClerkProviderWithRoutes = () => {
       <Routes>
         <Route path='/sign-in/*' element={<SignInPage />} />
         <Route path='/sign-up/*' element={<SignUpPage />} />
-        <Route element={<PageLayout />}>
-          <Route
-            path='/'
-            element={
-              <PrivateRoute>
-                <HomePage />
-              </PrivateRoute>
-            }
-          />
+        <Route
+          element={
+            <PrivateRoute>
+              <PageLayout />
+            </PrivateRoute>
+          }
+        >
+          <Route path='/' element={<HomePage />} />
         </Route>
       </Routes>
     </ClerkProvider>
