@@ -76,7 +76,7 @@ export default async function handler(
       dietary_restrictions TEXT[]);`;
 
       // store user id in table
-      await sql`INSERT INTO ${tableName} (id, username) VALUES ('${data.data.id}', '${data.data.username}');`;
+      await sql`INSERT INTO ${tableName} (id) VALUES ('${data.data.id}');`;
     }
   } catch (error) {
     return response.status(400).json({
