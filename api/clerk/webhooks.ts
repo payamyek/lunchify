@@ -64,18 +64,24 @@ export default async function handler(
     });
   }
 
-  if (data.type === 'user.created') {
-    const tableName = `${process.env.POSTGRES_TABLE_PREFIX}_users`;
+  try {
+    if (data.type === 'user.created') {
+      const tableName = `${process.env.POSTGRES_TABLE_PREFIX}_users`;
 
-    // create users table
-    await sql`CREATE TABLE IF NOT EXISTS ${tableName} (
+      // create users table
+      await sql`CREATE TABLE IF NOT EXISTS ${tableName} (
       id TEXT,
       username TEXT,
       food_preferences TEXT[],
       dietary_restrictions TEXT[]);`;
 
-    // store user id in table
-    await sql`INSERT INTO ${tableName} (id, username) VALUES ('${data.data.id}', '${data.data.username}');`;
+      // store user id in table
+      await sql`INSERT INTO ${tableName} (id, username) VALUES ('${data.data.id}', '${data.data.username}');`;
+    }
+  } catch (error) {
+    return response.status(400).json({
+      error: error instanceof Error ? error.toString() : '',
+    });
   }
 
   // send success response
