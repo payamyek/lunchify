@@ -88,5 +88,5 @@ export default async function handler(
   }
 
   // send success response
-  response.status(204);
+  response.status(204).json({});
 }
