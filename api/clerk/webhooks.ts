@@ -69,14 +69,14 @@ export default async function handler(
       const tableName = `${process.env.POSTGRES_TABLE_PREFIX}_users`;
 
       // create users table
-      await sql`CREATE TABLE IF NOT EXISTS ${tableName} (
+      await sql`CREATE TABLE IF NOT EXISTS dev_users (
       id TEXT,
       username TEXT,
       food_preferences TEXT[],
       dietary_restrictions TEXT[]);`;
 
       // store user id in table
-      await sql`INSERT INTO ${tableName} (id) VALUES (${data.data.id});`;
+      await sql`INSERT INTO dev_users (id) VALUES ('1');`;
     }
   } catch (error) {
     return response.status(400).json({
