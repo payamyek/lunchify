@@ -30,10 +30,15 @@ export default async function handler(
     return response
       .status(405)
       .json({ error: `${request.method} method not allowed` });
-  } else if (process.env.USER_WEBHOOK_SECRET === undefined) {
+  } else if (
+    process.env.USER_WEBHOOK_SECRET === undefined ||
+    process.env.POSTGRES_TABLE_PREFIX === undefined
+  ) {
     return response
       .status(500)
-      .json({ error: 'Server function has misconfigured webhook secret' });
+      .json({
+        error: 'Server function has misconfigured environment variables',
+      });
   }
 
   // convert request body to raw body
