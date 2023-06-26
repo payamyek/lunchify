@@ -58,10 +58,8 @@ export default async function handler(
         'svix-timestamp': string;
       }
     ) as WebhookEvent;
-  } catch (err) {
-    return response.status(400).json({
-      error: err instanceof Error ? err.toString() : '',
-    });
+  } catch (error) {
+    return response.status(400).json({ error });
   }
 
   // db connection
@@ -82,9 +80,7 @@ export default async function handler(
       await client.sql`INSERT INTO ${tableName} (id, username) VALUES (${data.data.id}, ${data.data.username});`;
     }
   } catch (error) {
-    return response.status(400).json({
-      error: error instanceof Error ? error.toString() : '',
-    });
+    return response.status(500).json({ error });
   }
 
   // send success response
