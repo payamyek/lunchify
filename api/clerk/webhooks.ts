@@ -1,5 +1,7 @@
 //import type { WebhookEvent } from '@clerk/clerk-sdk-node';
+import type { WebhookEvent } from '@clerk/clerk-sdk-node';
 import type { VercelRequest, VercelResponse } from '@vercel/node';
+import { sql } from '@vercel/postgres';
 import { Webhook } from 'svix';
 
 import type { Readable } from 'node:stream';
@@ -34,25 +36,45 @@ export default async function handler(
       .json({ error: 'Server function has misconfigured webhook secret' });
   }
 
-  const headers = {
-    'webhook-id': request.headers['svix-id'] as string,
-    'webhook-signature': request.headers['svix-signature'] as string,
-    'webhook-timestamp': request.headers['svix-timestamp'] as string,
-  };
-
+  // convert request body to raw body
   const buf = await buffer(request);
   const rawBody = buf.toString('utf8');
 
-  let msg;
+  // webhook data
+  let data;
 
   try {
     const wh = new Webhook(process.env.USER_WEBHOOK_SECRET);
-    msg = wh.verify(rawBody, headers);
+
+    // verify integrity of webhook
+    data = wh.verify(
+      rawBody,
+      request.headers as {
+        'svix-id': string;
+        'svix-signature': string;
+        'svix-timestamp': string;
+      }
+    ) as WebhookEvent;
   } catch (err) {
     return response.status(400).json({
       error: err instanceof Error ? err.toString() : '',
     });
   }
 
-  response.status(200).json({ msg });
+  if (data.type === 'user.created') {
+    // create users table
+    await sql`CREATE TABLE IF NOT EXISTS ${process.env.POSTGRES_TABLE_PREFIX}_users (
+      id TEXT,
+      username TEXT,
+      food_preferences TEXT[],
+      dietary_restrictions TEXT[]);`;
+
+    // store user id in table
+    await sql`INSERT INTO ${
+      process.env.POSTGRES_TABLE_PREFIX
+    }_users (id, username) VALUES (${(data.data.id, data.data.username)})`;
+  }
+
+  // send success response
+  response.status(204);
 }
