@@ -1,7 +1,7 @@
 //import type { WebhookEvent } from '@clerk/clerk-sdk-node';
 import type { WebhookEvent } from '@clerk/clerk-sdk-node';
 import type { VercelRequest, VercelResponse } from '@vercel/node';
-import { sql } from '@vercel/postgres';
+import { db } from '@vercel/postgres';
 import { Webhook } from 'svix';
 
 import type { Readable } from 'node:stream';
@@ -64,19 +64,22 @@ export default async function handler(
     });
   }
 
+  // db connection
+  const client = await db.connect();
+
   try {
     if (data.type === 'user.created') {
       //const tableName = `${process.env.POSTGRES_TABLE_PREFIX}_users`;
 
       // create users table
-      await sql`CREATE TABLE IF NOT EXISTS dev_users (
+      await client.sql`CREATE TABLE IF NOT EXISTS dev_users (
       id TEXT,
       username TEXT,
       food_preferences TEXT[],
       dietary_restrictions TEXT[]);`;
 
       // store user id in table
-      await sql`INSERT INTO dev_users (id) VALUES ('1');`;
+      await client.sql`INSERT INTO dev_users (id) VALUES ('1');`;
     }
   } catch (error) {
     return response.status(400).json({
