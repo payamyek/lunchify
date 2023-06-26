@@ -62,17 +62,17 @@ export default async function handler(
   }
 
   if (data.type === 'user.created') {
+    const tableName = `${process.env.POSTGRES_TABLE_PREFIX}_users`;
+
     // create users table
-    await sql`CREATE TABLE IF NOT EXISTS ${process.env.POSTGRES_TABLE_PREFIX}_users (
+    await sql`CREATE TABLE IF NOT EXISTS ${tableName} (
       id TEXT,
       username TEXT,
       food_preferences TEXT[],
       dietary_restrictions TEXT[]);`;
 
     // store user id in table
-    await sql`INSERT INTO ${
-      process.env.POSTGRES_TABLE_PREFIX
-    }_users (id, username) VALUES (${(data.data.id, data.data.username)})`;
+    await sql`INSERT INTO ${tableName} (id, username) VALUES (${data.data.id}, ${data.data.username})`;
   }
 
   // send success response
