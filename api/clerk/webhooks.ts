@@ -34,11 +34,9 @@ export default async function handler(
     process.env.USER_WEBHOOK_SECRET === undefined ||
     process.env.POSTGRES_TABLE_PREFIX === undefined
   ) {
-    return response
-      .status(500)
-      .json({
-        error: 'Server function has misconfigured environment variables',
-      });
+    return response.status(500).json({
+      error: 'Server function has misconfigured environment variables',
+    });
   }
 
   // convert request body to raw body
@@ -77,7 +75,7 @@ export default async function handler(
       dietary_restrictions TEXT[]);`;
 
     // store user id in table
-    await sql`INSERT INTO ${tableName} (id, username) VALUES (${data.data.id}, ${data.data.username})`;
+    await sql`INSERT INTO ${tableName} (id, username) VALUES ('${data.data.id}', '${data.data.username}');`;
   }
 
   // send success response
