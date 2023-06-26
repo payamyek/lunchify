@@ -66,7 +66,7 @@ export default async function handler(
 
   try {
     if (data.type === 'user.created') {
-      const tableName = `${process.env.POSTGRES_TABLE_PREFIX}_users`;
+      //const tableName = `${process.env.POSTGRES_TABLE_PREFIX}_users`;
 
       // create users table
       await sql`CREATE TABLE IF NOT EXISTS dev_users (
